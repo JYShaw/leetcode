@@ -1,3 +1,5 @@
+import java.util.LinkedList;
+import java.util.Queue;
 
 /*
  * @lc app=leetcode.cn id=111 lang=java
@@ -27,19 +29,35 @@ class Solution {
     if (root == null) {
       return 0;
     }
-    if (root.left == null && root.right == null) {
-      return 1;
-    }
-    int minDepth = Integer.MAX_VALUE;
-    if (root.left != null) {
-      minDepth = Math.min(minDepth(root.left), minDepth);
 
+    Queue<QueueNode> queue = new LinkedList<>();
+    queue.offer(new QueueNode(root, 1));
+    while (!queue.isEmpty()) {
+      QueueNode queueNode = queue.poll();
+      int depth = queueNode.depth;
+      TreeNode node = queueNode.node;
+      if (node.left == null && node.right == null) {
+        return depth;
+      }
+      if (node.left != null) {
+        queue.offer(new QueueNode(node.left, depth + 1));
+      }
+      if (node.right != null) {
+        queue.offer(new QueueNode(node.right, depth + 1));
+      }
     }
-    if (root.right != null) {
-      minDepth = Math.min(minDepth(root.right), minDepth);
-    }
-    return minDepth + 1;
+
+    return 0;
   }
+}
 
+class QueueNode {
+  public TreeNode node;
+  public int depth;
+
+  public QueueNode(TreeNode node, int depth) {
+    this.node = node;
+    this.depth = depth;
+  }
 }
 // @lc code=end
