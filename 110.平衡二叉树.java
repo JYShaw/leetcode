@@ -23,21 +23,24 @@
 class Solution {
 
   public boolean isBalanced(TreeNode root) {
-    if (root == null) {
-      return true;
-    }
-    return (
-      Math.abs(height(root.left) - height(root.right)) <= 1 &&
-      isBalanced(root.left) &&
-      isBalanced(root.right)
-    );
+    return height(root) >= 0;
   }
 
   private int height(TreeNode node) {
     if (node == null) {
       return 0;
     }
-    return Math.max(height(node.left), height(node.right)) + 1;
+    int leftHeight = height(node.left);
+    int rightHeight = height(node.right);
+    if (
+      leftHeight == -1 ||
+      rightHeight == -1 ||
+      Math.abs(leftHeight - rightHeight) > 1
+    ) {
+      return -1;
+    } else {
+      return Math.max(leftHeight, rightHeight) + 1;
+    }
   }
 }
 // @lc code=end
